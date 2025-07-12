@@ -17,13 +17,16 @@ Stops standard accounts from running privileged operations — ensuring only aut
 
 Powershell script used to fix: 
 
+# WN10-SO-000255 - Fix: Deny elevation requests for standard users
+
 # Run as Administrator!
 
-# Set NoNameReleaseOnDemand to 1
-Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\NetBT\Parameters" `
-  -Name "NoNameReleaseOnDemand" `
+# Set ConsentPromptBehaviorUser to 0 to automatically deny elevation requests
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" `
+  -Name "ConsentPromptBehaviorUser" `
   -Type DWord `
-  -Value 1
+  -Value 0
 
-Write-Output "NetBIOS name release requests will now be ignored except from WINS servers. STIG WN10-CC-000035 compliant."
+Write-Output "UAC behavior for standard users set to 'Automatically deny elevation requests'. STIG WN10-SO-000255 compliant."
+
 
